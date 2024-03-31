@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PatientRepository extends RepositoryManager<Patient, Long> {
-
     private DoctorRepository doctorRepository = new DoctorRepository();
     public PatientRepository() {
         super(Patient.class);
@@ -21,7 +20,8 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
     public void getAppointmentsByTckn(String tckn) {
         String queryString = "SELECT a " +
                 "FROM Appointment a JOIN Patient p ON a.patient_id = p.id " +
-                "WHERE p.tckn = :tckn ";
+                "WHERE p.tckn = :tckn " +
+                "ORDER BY a.date";
 
         TypedQuery<Appointment> query = getEntityManager().createQuery(queryString, Appointment.class);
         query.setParameter("tckn", tckn);
@@ -56,7 +56,6 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
         List<Object[]> results = query.getResultList();
         // Iterating over the results to populate the branchCountMap
         for (Object[] result : results) {
-//            String tckn = (String) result[0];
             BranchType branchType = (BranchType) result[0];
             Long appointmentCount = (Long) result[1];
             branchCountMap.put(branchType, appointmentCount);
@@ -76,6 +75,7 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
 
 
     //Adı verilen hasta Belirli bir tarih aralığında aldığı tüm randevuları listelensin.
+    //Bir hastanın son ziyaret tarihini döndürün
     public void getPatientAppointmentsBetweenDates(String tckn, LocalDate startDate, LocalDate endDate, boolean returnLastVisit) {
         String queryAllVisits = "SELECT a " +
                 "FROM Appointment a JOIN Patient p ON a.patient_id = p.id " +
@@ -89,7 +89,6 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
                 "AND a.date BETWEEN :startDate AND :endDate " +
                 "ORDER BY a.date DESC " +
                 "LIMIT 1";
-        ;
 
         TypedQuery<Appointment> query = getEntityManager().createQuery(returnLastVisit ? queryLastVisit : queryAllVisits, Appointment.class);
         query.setParameter("tckn", tckn);
@@ -113,6 +112,15 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
             System.out.printf("| %-20s | %-12s | %-10s | \n", doctorRepository.findDoctorInfoById(a.getDoctor_id()), a.getDate(), a.getTime());
         }
         System.out.printf("--------------------------------------------------------%n");
+    }
+
+    public String findPatientInfoById(Long id){
+        Optional<Patient> patient = findById(id);
+        String info = "Patient not found";
+        if(patient.isPresent()){
+            info =  "%s %s %s".formatted(patient.get().getTckn(), patient.get().getFirstname(), patient.get().getLastname());
+        }
+        return info;
     }
 
 

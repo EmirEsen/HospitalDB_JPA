@@ -164,7 +164,10 @@ public class DemoData {
         for (int i = 0; i < count; i++) {
             Long doctorId = doctorIds.get(random.nextInt(doctorIds.size()));
             Long patientId = patientIds.get(random.nextInt(patientIds.size()));
-            LocalDate date = LocalDate.now().plusDays(random.nextInt(30)); // Random date within the next 30 days
+            LocalDate startDate = LocalDate.of(2024, 1, 1);
+            LocalDate endDate = LocalDate.of(2026, 12, 31);
+            // Generate a random date between the start and end dates
+            LocalDate date = generateRandomDateBetween(startDate, endDate);
             LocalTime time = LocalTime.of(random.nextInt(24), random.nextInt(60)); // Random time between 00:00 and 23:59
 
             Appointment appointment = new Appointment();
