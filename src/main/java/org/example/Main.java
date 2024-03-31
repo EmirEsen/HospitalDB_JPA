@@ -7,7 +7,6 @@ import org.example.repository.PatientRepository;
 
 import java.time.LocalDate;
 
-
 public class Main {
     public static void main(String[] args) {
 
@@ -24,10 +23,12 @@ public class Main {
         patientRepository.getPatientAppointmentBranchCount("17870050859");
 
         //Adı verilen hasta Belirli bir tarih aralığında aldığı tüm randevuları listelensin.
-        patientRepository.getPatientAppointmentsBetweenDates("17870050859", LocalDate.of(2024, 4,1), LocalDate.of(2030, 4,10), false);
+        patientRepository.getPatientAppointmentsBetweenDates("17870050859",
+                LocalDate.of(2024, 4,1), LocalDate.of(2030, 4,10), false);
 
         //Bir hastanın son ziyaret tarihini döndürün
-        patientRepository.getPatientAppointmentsBetweenDates("17870050859", LocalDate.of(2024, 4,1), LocalDate.of(2030, 4,10), true);
+        patientRepository.getPatientAppointmentsBetweenDates("17870050859",
+                LocalDate.of(2024, 4,1), LocalDate.of(2030, 4,10), true);
 
         //Adı verilen doktor kaç hasta bakmıştır?
         doctorRepository.getAppointmentCountOfDoctor("Mina");
@@ -46,6 +47,7 @@ public class Main {
         branchRepository.getBranchAppointmentCount();
 
         //Belirli bir branşta en çok randevuya sahip hastaları listeleyen bir metod.
+        doctorRepository.getDoctorWithMostAppointmentBetweenDates(LocalDate.of(2026, 4, 1), LocalDate.of(2028, 6, 30));
 
 
     }

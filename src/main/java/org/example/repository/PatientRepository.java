@@ -27,16 +27,16 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
         query.setParameter("tckn", tckn);
 
         List<Patient> patient = findByColumnAndValue("tckn", tckn);
-        System.out.printf("----------- APPOINTMENTS ------------%n");
+        System.out.printf("--------------- APPOINTMENTS ----------------%n");
         System.out.printf("      %s  %S  %S  %n", patient.getFirst().getTckn(), patient.getFirst().getFirstname(), patient.getFirst().getLastname());
-        System.out.printf("-----------------------------------%n");
+        System.out.printf("---------------------------------------------%n");
         System.out.printf("| %-20s | %-10s | %-6s |%n", "Doctor", "DATE", "TIME");
-        System.out.printf("-----------------------------------%n");
+        System.out.printf("---------------------------------------------%n");
 
         for (Appointment a : query.getResultList()) {
             System.out.printf("| %-20s | %-10s | %-6s |%n", doctorRepository.findDoctorInfoById(a.getDoctor_id()), a.getDate(), a.getTime());
         }
-        System.out.printf("--------------------------------%n");
+        System.out.printf("---------------------------------------------%n");
     }
 
     //Adı verilen hasta Hangi branştan kaç randevu almış, listelesin.
@@ -102,9 +102,11 @@ public class PatientRepository extends RepositoryManager<Patient, Long> {
         String end = dtf.format(endDate);
         List<Patient> patient = findByColumnAndValue("tckn", tckn);
         System.out.printf("--------------------------------------------------------%n");
+        String dateBetween = "App. Between[%s - %s]".formatted(start, end);
+        String latestVisit = "           Latest Visit";
         System.out.printf("          %s  %S  %S \n " +
-                        "   App. Between[%s - %s]%n", patient.getFirst().getTckn(),
-                patient.getFirst().getFirstname(), patient.getFirst().getLastname(), start, end);
+                        "   %s %n", patient.getFirst().getTckn(),
+                patient.getFirst().getFirstname(), patient.getFirst().getLastname(), returnLastVisit ? latestVisit : dateBetween );
         System.out.printf("--------------------------------------------------------%n");
         System.out.printf("| %-20s | %-12s | %-10s |%n", "Doctor", "Date", "Time");
         System.out.printf("--------------------------------------------------------%n");

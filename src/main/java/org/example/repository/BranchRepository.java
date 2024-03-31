@@ -46,6 +46,4 @@ public class BranchRepository extends RepositoryManager<Branch, Long> {
     }
 
 
-
-
 }

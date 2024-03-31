@@ -33,13 +33,11 @@ public class DemoData {
 
     }
 
-
     public void createDemoData() {
         createDoctors();
         generateSamplePatients(30);
         generateSampleAppointments(1000);
         createBranches();
-
     }
 
     private void createBranches() {
